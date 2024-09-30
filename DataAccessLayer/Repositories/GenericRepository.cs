@@ -1,6 +1,5 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
-using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,39 +8,38 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
-    public class BlogRepository : IBlogDal
+    public class GenericRepository<T> : IGenericDal<T> where T : class
     {
-
-        public void AddBlog(Blog blog)
+        public void Delete(T t)
         {
             using var c = new Context();
-            c.Add(blog);
+            c.Remove(t);
             c.SaveChanges();
         }
 
-        public void DeleteBlog(Blog blog)
+        public T GetById(int id)
         {
             using var c = new Context();
-            c.Remove(blog);
+            return c.Set<T>().Find(id);
+        }
+
+        public List<T> GetListAll()
+        {
+            using var c = new Context();
+            return c.Set<T>().ToList();
+        }
+
+        public void Insert(T t)
+        {
+            using var c = new Context();
+            c.Add(t);
             c.SaveChanges();
         }
 
-        public Blog GetBlogById(int id)
+        public void Update(T t)
         {
             using var c = new Context();
-            return c.Blogs.Find(id);
-        }
-
-        public List<Blog> ListAllBlogs()
-        {
-            using var c = new Context();
-            return c.Blogs.ToList();
-        }
-
-        public void UpdateBlog(Blog blog)
-        {
-            using var c = new Context();
-            c.Update(blog);
+            c.Update(t);
             c.SaveChanges();
         }
     }
