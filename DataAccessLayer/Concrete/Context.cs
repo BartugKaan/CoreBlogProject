@@ -11,9 +11,11 @@ namespace DataAccessLayer.Concrete
 {
     public class Context : DbContext
     {
+        protected ConnectionSettings ConnectionSettings = new ConnectionSettings();
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-TRB01I0;database=CoreBlogDb; integrated security=true;");
+            optionsBuilder.UseSqlServer(ConnectionSettings.ServerOption);
         }
         public DbSet<About> Abouts { get; set; }
         public DbSet<Blog> Blogs { get; set; }
