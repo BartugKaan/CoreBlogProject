@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Concrete
 {
-    internal class CategoryManager : ICategoryService
+    public class CategoryManager : ICategoryService
     {
+        GenericRepository<Category> repo = new GenericRepository<Category>();
 
         public void AddCategory(Category category)
         {
@@ -19,7 +20,10 @@ namespace BusinessLayer.Concrete
 
         public void DeleteCategory(Category category)
         {
-            throw new NotImplementedException();
+            if(category.CategoryID != 0)
+            {
+                repo.Delete(category);
+            }
         }
 
         public Category GetById(int id)
